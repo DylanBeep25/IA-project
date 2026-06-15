@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directorio Inteligencia (IAN)</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons para una interfaz moderna -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js para gráficos de cobertura -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            accent: {
+              50: '#f0fdf4',
+              500: '#22c55e',
+              600: '#16a34a',
+            }
+          },
+          boxShadow: {
+            'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+            'hover': '0 20px 40px -15px rgba(99, 102, 241, 0.15), 0 1px 10px rgba(0, 0, 0, 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 20px;
+    }
+    .chat-bubble-user {
+      border-top-right-radius: 2px;
+    }
+    .chat-bubble-agent {
+      border-top-left-radius: 2px;
+    }
+  </style>
+</head>
+<body class="h-full overflow-hidden flex flex-col">
+
+  <!-- Base de datos de Tableros incrustada e indexada de forma estructurada -->
+  <script>
+    const dbTableros = [
+      {
+        codigo: "MKT001",
+        nombre: "AUP Motos Guatemala",
+        pais: "Guatemala",
+        area: "Inteligencia de mercados",
+        descripcion: "El tablero AUP Guatemala permite analizar el comportamiento del mercado de motocicletas en Guatemala mediante información de participación de mercado, volumen de registros, crecimiento y desempeño de marcas. Facilita la comparación entre competidores, la identificación de marcas líderes y el seguimiento de tendencias del mercado a nivel nacional. Incluye análisis por marca, línea, segmento, cilindrada, región, departamento y período de tiempo.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQD_5A1k_rMXSo6naCbZ9__NAZ3L8lexFGMUsBtZqD92fGM?e=Zafd8L",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Qué marca lidera el mercado de motocicletas en Guatemala?",
+          "¿Dónde somos más fuertes en motocicletas en Guatemala?",
+          "¿Cuál es el crecimiento del segmento urbana en Guatemala?",
+          "¿Cuál es el crecimiento del segmento scooter en Guatemala?",
+          "¿Cuál es el crecimiento del segmento scrambler en Guatemala?",
+          "¿Cuál es el crecimiento del segmento underbone en Guatemala?",
+          "¿Cuál es el crecimiento del segmento atv en Guatemala?",
+          "¿En qué departamento se está registrando más placas de motocicletas?",
+          "¿Cuál es la variación de motocicletas de este mes?",
+          "¿Cuál es la participación por propósito de motos?",
+          "¿Cuál es la participación del mercado de motos por marca?",
+          "¿Cuál es el alza de placas por importador en motocicletas?"
+        ],
+        cuandoUsar: [
+          "Análisis de cuotas de mercado de motos",
+          "Planeación comercial y ventas de motocicletas",
+          "Evaluación competitiva nacional y departamental"
+        ],
+        cuandoNoUsar: [
+          "Monitorear stock físico o inventarios",
+          "Análisis financiero detallado",
+          "Venta de repuestos o talleres de servicio"
+        ],
+        keywords: ["Alza de placas", "Motos", "Participación", "Crecimiento", "Alzas", "Segmento", "Competencia", "Mix de venta", "Ranking", "Marca", "Importador", "Lider", "Urbana", "Scooter", "Scrambler", "Underbone", "ATV"],
+        kpis: [
+          { name: "Market Share", definition: "Participación de una marca sobre el total del mercado" },
+          { name: "Alzas", definition: "Registro de unidades en el mercado" },
+          { name: "Mix venta", definition: "Proporción de los productos que vende una marca que contribuye a los ingresos totales." },
+          { name: "Variación", definition: "Diferencia porcentual de un periodo a otro" }
+        ],
+        resumenIA: "Este tablero es la columna vertebral para cualquier análisis de marcas de motocicletas en Guatemala, proporcionando una segmentación robusta por cilindrada y geografía."
+      },
+      {
+        codigo: "MKT002",
+        nombre: "AUP Motos El Salvador",
+        pais: "El Salvador",
+        area: "Inteligencia de mercados",
+        descripcion: "El tablero AUP El Salvador permite monitorear y analizar el comportamiento de participación, volumen de ventas y registros de placas del mercado de motocicletas en El Salvador. Permite visualizar tendencias competitivas y analizar marcas líderes en el país.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQBuQyZg-M9NSLkFwDyNsfVpAQPvPJdjPFy8cuHdnkX_14M?e=aB786c",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Qué marca lidera el mercado de motocicletas de El Salvador?",
+          "¿Dónde somos más fuertes en motocicletas en El Salvador?",
+          "¿Cuál es el crecimiento del segmento urbana en El Salvador?",
+          "¿Cuál es el crecimiento del segmento scooter en El Salvador?",
+          "¿Cuál es el crecimiento del segmento scrambler en El Salvador?",
+          "¿Cuál es el crecimiento del segmento underbone en El Salvador?",
+          "¿Cuál es el crecimiento del segmento atv en El Salvador?",
+          "¿En qué departamento se está registrando más placas de motocicletas en El Salvador?",
+          "¿Cuál es la variación de motocicletas del mes en El Salvador?",
+          "¿Cuál es la participación por propósito de motocicletas en El Salvador?"
+        ],
+        cuandoUsar: [
+          "Evaluación de competencia en El Salvador",
+          "Planificación de campañas comerciales en El Salvador",
+          "Análisis de volumen por propósito y segmento de motos"
+        ],
+        cuandoNoUsar: [
+          "Inventarios o control logístico local",
+          "Márgenes contables o facturas",
+          "Autos u otros vehículos de 4 ruedas"
+        ],
+        keywords: ["Alza de placas El Salvador", "Motos El Salvador", "Participación El Salvador", "Crecimiento El Salvador", "Alzas El Salvador", "Segmento El Salvador", "Competencia El Salvador", "Mix de venta El Salvador", "Ranking El Salvador", "Marca El Salvador", "Importador El Salvador", "Lider El Salvador", "Urbana El Salvador", "Scooter El Salvador", "Scrambler El Salvador", "Underbone El Salvador", "ATV El Salvador"],
+        kpis: [
+          { name: "Market Share El Salvador", definition: "Participación de una marca sobre el total del mercado en El Salvador" },
+          { name: "Alzas El Salvador", definition: "Registro de unidades en el mercado de El Salvador" },
+          { name: "Mix venta El Salvador", definition: "Proporción de los productos que vende una marca que contribuye a los ingresos totales en El Salvador" },
+          { name: "Variación El Salvador", definition: "Diferencia porcentual de un periodo a otro en El Salvador" }
+        ],
+        resumenIA: "Tablero específico y contextualizado para el mercado salvadoreño, ideal para comparar la cuota del mercado de motocicletas frente a marcas rivales directas."
+      },
+      {
+        codigo: "MKT003",
+        nombre: "AUP Motos Honduras",
+        pais: "Honduras",
+        area: "Inteligencia de mercados",
+        descripcion: "El tablero AUP Honduras recopila la información estadística del registro de importaciones y placas de motocicletas en el mercado hondureño, proveyendo al equipo comercial de una herramienta robusta de análisis competitivo por segmentos y marcas.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQE1Yn8uLhP_RJDn88hB7v0BfU1v7sNJDZk8fDmsV8e5DA?e=6781hJ",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Qué marca lidera el mercado de motocicletas de Honduras?",
+          "¿Dónde somos más fuertes en motocicletas en Honduras?",
+          "¿Cuál es el crecimiento del segmento urbana en Honduras?",
+          "¿Cuál es el crecimiento del segmento scooter en Honduras?",
+          "¿Cuál es el crecimiento del segmento scrambler en Honduras?",
+          "¿Cuál es el crecimiento del segmento underbone en Honduras?",
+          "¿Cuál es el crecimiento del segmento atv en Honduras?",
+          "¿En qué departamento se está registrando más placas de motocicletas en Honduras?",
+          "¿Cuál es la variación de motocicletas del mes en Honduras?",
+          "¿Cuál es la participación por propósito de motocicletas en Honduras?"
+        ],
+        cuandoUsar: [
+          "Planeación comercial de motocicletas en Honduras",
+          "Evaluación de la penetración de marcas en Honduras",
+          "Estudiar el crecimiento de segmentos como Scooter y Urbana"
+        ],
+        cuandoNoUsar: [
+          "Control contable de facturación de repuestos",
+          "Nivel de existencias en tiendas locales",
+          "Planificación de servicios posventa"
+        ],
+        keywords: ["Alza de placas Honduras", "Motos Honduras", "Participación Honduras", "Crecimiento Honduras", "Alzas Honduras", "Segmento Honduras", "Competencia Honduras", "Mix de venta Honduras", "Ranking Honduras", "Marca Honduras", "Importador Honduras", "Lider Honduras", "Urbana Honduras", "Scooter Honduras", "Scrambler Honduras", "Underbone Honduras", "ATV Honduras"],
+        kpis: [
+          { name: "Market Share Honduras", definition: "Participación de una marca sobre el total del mercado en Honduras" },
+          { name: "Alzas Honduras", definition: "Registro de unidades en el mercado de Honduras" },
+          { name: "Mix venta Honduras", definition: "Proporción de los productos que vende una marca que contribuye a los ingresos totales en Honduras" },
+          { name: "Variación Honduras", definition: "Diferencia porcentual de un periodo a otro en Honduras" }
+        ],
+        resumenIA: "Solución de inteligencia diseñada para entender las tendencias de adquisición de vehículos de dos ruedas en el territorio de Honduras."
+      },
+      {
+        codigo: "MKT004",
+        nombre: "Precios de la Competencia",
+        pais: "Regional",
+        area: "Inteligencia de mercados",
+        descripcion: "Consolida la información estratégica de precios de venta final y precios de lista recomendados por los fabricantes para todos los competidores del sector a nivel regional. Permite estructurar comparativas de rentabilidad comercial y análisis de brecha de precios.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQF_9C4k_rMXSo6naCbZ9__NAZ3L8lexFGMUsBtZqD92fGM?e=cD901e",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Cuál es el precio de lista promedio por fabricante?",
+          "¿Cuál es el precio de venta final al consumidor?",
+          "¿Cómo ha variado el histórico de precios de la competencia?",
+          "¿Qué competidores tienen los precios base más bajos?"
+        ],
+        cuandoUsar: [
+          "Fijación de precios de productos nuevos",
+          "Evaluación de elasticidad y brechas de precio competitivas",
+          "Análisis de promociones o descuentos"
+        ],
+        cuandoNoUsar: [
+          "Monitoreo de costos internos de producción",
+          "Fijación de margen de ganancia neto contable",
+          "Tiempos logísticos de distribución"
+        ],
+        keywords: ["Precios", "Precios de lista", "Precio de venta", "Competidores", "Brecha de precios", "Historico de precios"],
+        kpis: [
+          { name: "Precio de lista", definition: "Precio base por el fabricante" },
+          { name: "Precio de venta", definition: "Valor final que un consumidor paga para adquirir el producto" },
+          { name: "Historico de precios", definition: "Comportamiento de precios históricos de un producto" }
+        ],
+        resumenIA: "Esencial para el departamento de mercadeo y producto para realizar análisis de competitividad tarifaria a nivel regional."
+      },
+      {
+        codigo: "MKT005",
+        nombre: "Precios Motocicletas",
+        pais: "Regional",
+        area: "Inteligencia de mercados",
+        descripcion: "Tablero interactivo para el monitoreo minucioso de las estructuras de precios del segmento de motocicletas en la región. Muestra comparativas entre marcas propias y la competencia en precios sugeridos de lista, venta final e históricos por línea y modelo.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQG_0D5k_rMXSo6naCbZ9__NAZ3L8lexFGMUsBtZqD92fGM?e=dE012f",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Cuál es el precio de lista de motocicletas competidoras?",
+          "¿Cuál es el precio de venta final de motocicletas en el mercado?",
+          "¿Cuál es el comportamiento de precios históricos de motocicletas por marca?"
+        ],
+        cuandoUsar: [
+          "Monitoreo de tácticas comerciales de precios en motos",
+          "Alineación regional de precios sugeridos de lista",
+          "Comparativa de modelos de motos específicos"
+        ],
+        cuandoNoUsar: [
+          "Fuerza motriz o equipos industriales marinos",
+          "Costos internos del distribuidor",
+          "Existencias de almacén"
+        ],
+        keywords: ["Precios motocicleta", "Precios de lista motocicleta", "Precio de venta motocicleta", "Competencia de motos", "Motos precios"],
+        kpis: [
+          { name: "Precio de lista motocicletas", definition: "Precio base por el fabricante de motocicletas" },
+          { name: "Precio de venta motocicletas", definition: "Valor final que un consumidor paga para adquirir el producto en motocicletas" },
+          { name: "Historico de precios motocicletas", definition: "Comportamiento de precios históricos de motocicletas" }
+        ],
+        resumenIA: "La herramienta líder para directores de marca de motocicletas, ayudando a vigilar el posicionamiento de precios de motos rivales."
+      },
+      {
+        codigo: "MKT006",
+        nombre: "Precios Fuerza Motriz y Marinos",
+        pais: "Regional",
+        area: "Inteligencia de mercados",
+        descripcion: "Este tablero recopila y analiza las variaciones de precios de lista, precios de venta sugeridos e históricos para las categorías industriales de Fuerza Motriz y productos Marinos (motores fuera de borda, generadores, etc.) en los mercados regionales.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQH_1E6k_rMXSo6naCbZ9__NAZ3L8lexFGMUsBtZqD92fGM?e=eF123g",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Cuál es el precio de lista de los productos de fuerza motriz?",
+          "¿Cuál es el precio de venta sugerido en marinos?",
+          "¿Cómo se comportan los precios históricos de fuerza motriz y marinos?",
+          "¿Qué marca ofrece el precio de venta marinos más óptimo?"
+        ],
+        cuandoUsar: [
+          "Análisis de precios de motores marinos y generadores",
+          "Planificación de cotizaciones corporativas o industriales",
+          "Estructura comercial de la división de fuerza motriz"
+        ],
+        cuandoNoUsar: [
+          "Precios de motocicletas",
+          "Planificación de repuestos automotrices",
+          "Márgenes financieros corporativos"
+        ],
+        keywords: ["Precios fuerza motriz", "Precios de lista fuerza motriz", "Precio de venta fuerza motriz", "Precios marinos", "Precios de lista marinos", "Precio de venta marinos"],
+        kpis: [
+          { name: "Precio de lista fuerza motriz", definition: "Precio base por el fabricante de fuerza motriz" },
+          { name: "Precio de venta fuerza motriz", definition: "Valor final que un consumidor paga para adquirir el producto en fuerza motriz" },
+          { name: "Historico de precios fuerza motriz", definition: "Comportamiento de precios históricos de fuerza motriz" },
+          { name: "Precio de lista marinos", definition: "Precio base por el fabricante de marinos" },
+          { name: "Precio de venta marinos", definition: "Valor final que un consumidor paga para adquirir el producto en marinos" },
+          { name: "Historico de precios marinos", definition: "Comportamiento de precios históricos de marinos" }
+        ],
+        resumenIA: "Solución de inteligencia de precios para la división industrial, enfocada en la oferta de fuerza motriz y motores marinos competitivos."
+      },
+      {
+        codigo: "MKT007",
+        nombre: "Licitaciones y Concursos (Guatecompras)",
+        pais: "Guatemala",
+        area: "Inteligencia de mercados",
+        descripcion: "Monitorea activamente todos los concursos, licitaciones y cotizaciones públicas disponibles en el sistema Guatecompras en Guatemala. Permite dar seguimiento al Número de Operación de Guatecompras (NOG) e identificar requerimientos gubernamentales vigentes.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQI_2F7k_rMXSo6naCbZ9__NAZ3L8lexFGMUsBtZqD92fGM?e=fG234h",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Diario / Semanal",
+        preguntas: [
+          "¿Qué concursos están vigentes actualmente en Guatecompras?",
+          "¿Qué licitaciones están disponibles para nuestro sector?",
+          "¿Cuántas cotizaciones están activas en el portal gubernamental?",
+          "¿Cómo podemos ubicar un concurso a través de su NOG?"
+        ],
+        cuandoUsar: [
+          "Seguimiento diario de oportunidades del sector público",
+          "Estrategia de ventas institucionales y corporativas",
+          "Monitorear la competencia en licitaciones estatales"
+        ],
+        cuandoNoUsar: [
+          "Estudios de mercado minorista (B2C)",
+          "Análisis comercial fuera de Guatemala",
+          "Inventarios o control logístico corporativo"
+        ],
+        keywords: ["Concurso", "Licitaciones", "Cotizaciones", "NOG", "Número de operación de Guatecompras", "Guatecompras", "Gobierno", "Compras públicas", "Disponible", "Vigente"],
+        kpis: [
+          { name: "Licitaciones", definition: "Cantidad de licitaciones vigentes" },
+          { name: "Cotizaciones", definition: "Cantidad de cotizaciones vigentes" }
+        ],
+        resumenIA: "Un tablero sumamente ágil e indispensable para el área de Ventas de Gobierno, garantizando que ninguna licitación de interés pase desapercibida."
+      },
+      {
+        codigo: "MKT008",
+        nombre: "Market Share Autos Guatemala",
+        pais: "Guatemala",
+        area: "Inteligencia de mercados",
+        descripcion: "Analiza el comportamiento global de la participación de mercado de automóviles en Guatemala. Ofrece información sobre volumen de registros (alzas de placas), mix de venta, segmentación de autos por tipo (SUV, Sedán, Pick-up, etc.) y variación temporal.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQJ_3G8k_rMXSo6naCbZ9__NAZ3L8lexFGMUsBtZqD92fGM?e=gH345i",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Qué marca de autos lidera el mercado de automóviles en Guatemala?",
+          "¿Dónde somos más fuertes en el mercado de autos?",
+          "¿Cuál es el crecimiento de los segmentos de autos (SUV, pickup, sedán)?",
+          "¿En qué departamento se concentra el registro de más placas de autos?",
+          "¿Cuál es la variación mensual de unidades registradas?",
+          "¿Cuál es la participación por propósito en el mercado de autos?",
+          "¿Cuál es la cuota de mercado por marca de autos?"
+        ],
+        cuandoUsar: [
+          "Planificación y cuotas de importación de vehículos de 4 ruedas",
+          "Evaluación de crecimiento de competidores de marcas de agencia",
+          "Diseño de ofertas comerciales para segmentos fuertes"
+        ],
+        cuandoNoUsar: [
+          "Vehículos de 2 ruedas (motocicletas)",
+          "Control de stock o talleres",
+          "Autos rodados de importación directa informal (ver MKT009)"
+        ],
+        keywords: ["Alza de placas autos", "autos", "Participación de autos", "Crecimiento de autos", "Alzas de autos", "Segmento autos", "Competencia autos", "Mix de venta autos", "Ranking de autos", "Marca de autos", "Importador de autos", "Lider autos", "Suv", "Pick up", "Sedan", "Camión", "Hatchback", "Microbus", "Panel", "Van", "Bus", "MPV"],
+        kpis: [
+          { name: "Market Share autos", definition: "Participación de una marca sobre el total del mercado de autos" },
+          { name: "Alzas autos", definition: "Registro de unidades en el mercado de autos" },
+          { name: "Mix venta autos", definition: "Proporción de los productos que vende una marca que contribuye a los ingresos totales de autos" },
+          { name: "Variación autos", definition: "Diferencia porcentual de un periodo a otro de autos" }
+        ],
+        resumenIA: "Muestra la radiografía integral del mercado formal de automóviles de agencia en Guatemala, categorizando las marcas y el mix comercial mensual."
+      },
+      {
+        codigo: "MKT009",
+        nombre: "AUP Autos (Rodados vs Agencia)",
+        pais: "Guatemala",
+        area: "Inteligencia de mercados",
+        descripcion: "Tablero de inteligencia comercial enfocado en un análisis diferencial del mercado automotriz de Guatemala: compara detalladamente los autos importados usados (Rodados) frente a los vehículos importados nuevos (Agencia). Ofrece distribución de mercado por segmentos, alza de placas por departamento y desglose completo a nivel de municipios.",
+        url: "https://sopesagt-my.sharepoint.com/:u:/g/personal/carlos_rogel_admosa_com/IQDh2slPqWChQqYyGmT-A182AYMo4q7baJM7yNlhPyfZm00?e=wQPe0I",
+        responsable: "Inteligencia de mercados",
+        frecuencia: "Mensual",
+        preguntas: [
+          "¿Cuál es el crecimiento del alza de placas de autos rodados vs de agencia?",
+          "¿Qué cantidad de vehículos rodados se importan mensualmente?",
+          "¿Qué cantidad de vehículos de agencia se registran?",
+          "¿Cuál es la distribución de segmentos por mercado (nuevo vs usado)?",
+          "¿Cuál es el alza de placas por departamento?",
+          "¿Cuál es la alza de placas y volumen registrado a nivel de municipios?",
+          "¿Cuál es la participación por marca en el segmento rodado?"
+        ],
+        cuandoUsar: [
+          "Análisis competitivo frente a importadores directos e informales",
+          "Planificación de puntos de venta geográficos a nivel municipal",
+          "Identificar nichos de mercado por segmento en el interior del país"
+        ],
+        cuandoNoUsar: [
+          "Inventarios y control logístico interno",
+          "Contabilidad financiera o presupuestos",
+          "Estudios de motocicletas u otros nichos industriales"
+        ],
+        keywords: ["Alza de placas autos", "autos", "Participación de autos", "Crecimiento de autos", "Alzas de autos", "Segmento autos", "Competencia autos", "Mix de venta autos", "Ranking de autos", "Marca de autos", "Importador de autos", "Lider autos", "Suv", "Pick up", "Sedan", "Camión", "Hatchback", "Microbus", "Panel", "Van", "Bus", "MPV", "Rodados", "Agencia", "Rodados vs agencia", "Mercado por segmento", "Alza de placas por departamento", "Alza de placas por municipio"],
+        kpis: [
+          { name: "Market Share autos", definition: "Participación de una marca sobre el total del mercado de autos" },
+          { name: "Alzas autos", definition: "Registro de unidades en el mercado" },
+          { name: "Mix venta autos", definition: "Proporción de los productos que vende una marca que contribuye a los ingresos de autos" },
+          { name: "Variación autos", definition: "Diferencia porcentual de un periodo a otro de autos" },
+          { name: "Rodados vs agencia", definition: "Comparativo de autos rodados (usados importados) vs autos de agencias (nuevos)" },
+          { name: "Mercado por segmento", definition: "Distribución del mercado de autos por segmento" },
+          { name: "Alza de placas por departamento", definition: "Concentración de vehículos por departamento en Guatemala" },
+          { name: "Alza de placas por municipios", definition: "Concentración de vehículos por municipios en Guatemala" }
+        ],
+        resumenIA: "Un desarrollo único de gran valor estratégico. Permite contrastar la influencia del mercado automotor informal (rodado) contra el formal, mapeando geográficamente las alzas a nivel municipal."
+      }
+    ];
+
+    const dbSinonimos = [
+      { termino: "Share", significado: "Participación" },
+      { termino: "Market Share", significado: "Participación / Cuota de mercado" },
+      { termino: "Ventas mercado", significado: "Alzas / Registros de placas" },
+      { termino: "Sport", significado: "Urbana" },
+      { termino: "Mix de venta", significado: "Mezcla o proporción de venta de productos" },
+      { termino: "Concurso", significado: "Guatecompras / Licitaciones gubernamentales" },
+      { termino: "Disponible", significado: "Vigente / Activo" },
+      { termino: "Compras", significado: "Licitación / Adquisición corporativa" },
+      { termino: "Rodados", significado: "Carros usados / Vehículos importados de segunda mano" },
+      { termino: "Autos de agencia", significado: "Vehículos nuevos / Carros de distribuidor oficial" }
+    ];
+  </script>
+
+  <!-- Barra de Navegación Header -->
+  <header class="bg-brand-900 text-white shadow-md flex-shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-brand-600 rounded-lg">
+          <i data-lucide="database" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">DIT — Directorio Inteligente</h1>
+          <p class="text-xs text-brand-100">Portal y Agente de Búsqueda de Tableros Comerciales</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="hidden md:flex items-center space-x-2 text-xs bg-brand-800 px-3 py-1.5 rounded-full text-brand-200">
+          <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse"></span>
+          <span>9 Directorios Sincronizados</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Layout Principal con Sidebar Lateral -->
+  <div class="flex-1 flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between flex-shrink-0">
+      <div class="p-4 space-y-6">
+        <div>
+          <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Navegación</span>
+          <nav class="mt-2 space-y-1">
+            <button onclick="switchView('tableros')" id="btn-nav-tableros" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700">
+              <i data-lucide="layout-grid" class="w-5 h-5"></i>
+              <span>Explorador de Tableros</span>
+            </button>
+            <button onclick="switchView('agente')" id="btn-nav-agente" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <i data-lucide="bot-message-square" class="w-5 h-5 text-indigo-500"></i>
+              <span>Agente Virtual DIT</span>
+            </button>
+            <button onclick="switchView('glosario')" id="btn-nav-glosario" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
+              <span>Glosario y Sinónimos</span>
+            </button>
+            <button onclick="switchView('analisis')" id="btn-nav-analisis" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-500"></i>
+              <span>Análisis de Datos</span>
+            </button>
+          </nav>
+        </div>
+
+        <div>
+          <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Configuración de IA</span>
+          <div class="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+            <label class="block text-[11px] font-semibold text-slate-600">Gemini API Key (Opcional)</label>
+            <input type="password" id="gemini-api-key" placeholder="Configurado automáticamente" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:ring-1 focus:ring-brand-500 focus:outline-none" value="">
+            <p class="text-[10px] text-slate-400 leading-tight">Si se deja vacío, se usará el motor de recomendación local enriquecido del DIT.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 text-[11px] text-slate-400 text-center">
+        <span>DIT Portal v2.0 - 2026</span>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal Dinámico -->
+    <main class="flex-1 overflow-y-auto bg-slate-50 flex flex-col relative custom-scrollbar">
+      
+      <!-- Seccion 1: Explorador de Tableros (GRID) -->
+      <section id="view-tableros" class="view-section p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+        <!-- Hero del Explorador -->
+        <div class="bg-gradient-to-r from-brand-700 to-indigo-800 text-white rounded-2xl p-6 shadow-premium relative overflow-hidden">
+          <div class="relative z-10 max-w-2xl">
+            <h2 class="text-2xl font-bold">Ubica tu Tablero de Inteligencia de Mercados</h2>
+            <p class="mt-1.5 text-indigo-100 text-sm leading-relaxed">Encuentra los enlaces, indicadores, palabras clave, preguntas de negocio y guías de uso de todos los tableros analíticos de la división.</p>
+          </div>
+          <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10">
+            <i data-lucide="layout-grid" class="w-64 h-64 text-white"></i>
+          </div>
+        </div>
+
+        <!-- Buscador y Filtros -->
+        <div class="bg-white p-4 rounded-xl shadow-premium border border-slate-200 space-y-3.5">
+          <div class="flex flex-col md:flex-row gap-3">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="absolute left-3.5 top-3 w-5 h-5 text-slate-400"></i>
+              <input type="text" id="search-input" oninput="filterTableros()" placeholder="Busca por nombre, palabras clave, KPIs o preguntas de negocio (ej. 'rodados', 'motocicletas', 'precios')..." class="w-full pl-11 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 focus:outline-none transition-all">
+            </div>
+            <div class="flex gap-2">
+              <button onclick="toggleFrecuencias()" class="flex items-center space-x-1.5 px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-700 transition-all">
+                <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                <span>Filtros</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filtros de Categorías Rápidas -->
+          <div class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-100">
+            <span class="text-xs text-slate-400 mr-2">País:</span>
+            <button onclick="filterByCountry('Todos')" id="filter-country-Todos" class="btn-country active px-3 py-1 text-xs font-semibold rounded-full bg-brand-600 text-white transition-all">Todos</button>
+            <button onclick="filterByCountry('Guatemala')" id="filter-country-Guatemala" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">Guatemala</button>
+            <button onclick="filterByCountry('El Salvador')" id="filter-country-El Salvador" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">El Salvador</button>
+            <button onclick="filterByCountry('Honduras')" id="filter-country-Honduras" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">Honduras</button>
+            <button onclick="filterByCountry('Regional')" id="filter-country-Regional" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">Regional</button>
+          </div>
+        </div>
+
+        <!-- Mensaje de conteo -->
+        <div class="flex justify-between items-center text-xs text-slate-500 px-1">
+          <span id="tableros-count">Mostrando 9 tableros disponibles</span>
+          <span class="text-brand-600 font-medium">Búsqueda inteligente activa</span>
+        </div>
+
+        <!-- Grid de Tableros -->
+        <div id="tableros-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Las tarjetas de tableros se renderizarán aquí de forma dinámica -->
+        </div>
+      </section>
+
+      <!-- Seccion 2: Agente IA Interactivo (Chatbot) -->
+      <section id="view-agente" class="view-section hidden flex-1 flex flex-col overflow-hidden h-full">
+        <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+          <!-- Ventana de Chat -->
+          <div class="flex-1 flex flex-col bg-white border-b md:border-b-0 md:border-r border-slate-200 overflow-hidden h-full">
+            <!-- Header del Chat -->
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 shadow-sm">
+                  <i data-lucide="bot-message-square" class="w-6 h-6 animate-pulse"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">DIT-Agent</h3>
+                  <p class="text-[11px] text-accent-600 font-medium flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-500"></span>
+                    Asesor de Directorios Activo
+                  </p>
+                </div>
+              </div>
+              <button onclick="clearChat()" class="text-xs text-slate-400 hover:text-slate-600 flex items-center space-x-1 p-1 rounded hover:bg-slate-100 transition-all">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Limpiar Historial</span>
+              </button>
+            </div>
+
+            <!-- Contenedor de Mensajes -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar">
+              <!-- Mensaje de bienvenida inicial -->
+              <div class="flex items-start space-x-3 max-w-[85%]">
+                <div class="w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 flex-shrink-0 border border-indigo-100">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <div class="bg-indigo-50 text-slate-800 p-4 rounded-2xl shadow-sm border border-indigo-100/50 text-sm chat-bubble-agent leading-relaxed">
+                  <p class="font-bold text-indigo-900 mb-1">¡Hola! Soy el DIT-Agent 🤖✨</p>
+                  <p class="mb-2">Estoy entrenado con los directorios, KPIs, sinónimos corporativos y preguntas frecuentes de todos los tableros comerciales.</p>
+                  <p class="mb-3">Dime qué tipo de información estás buscando o cuál es tu problema y te recomendaré exactamente el tablero que necesitas con su enlace directo.</p>
+                  <span class="text-[10px] text-indigo-400 font-semibold block uppercase tracking-wider">Prueba preguntándome:</span>
+                  <div class="flex flex-wrap gap-1.5 mt-2">
+                    <button onclick="setChatQuery('¿Cuál es el tablero de motos para El Salvador?')" class="text-left bg-white text-indigo-700 hover:bg-indigo-100 text-[11px] px-2.5 py-1 rounded-full border border-indigo-200 transition-all font-medium">¿Motos en El Salvador?</button>
+                    <button onclick="setChatQuery('¿Dónde puedo ver carros usados importados?')" class="text-left bg-white text-indigo-700 hover:bg-indigo-100 text-[11px] px-2.5 py-1 rounded-full border border-indigo-200 transition-all font-medium">¿Carros usados rodados?</button>
+                    <button onclick="setChatQuery('Recomiéndame un tablero para buscar concursos de Guatecompras')" class="text-left bg-white text-indigo-700 hover:bg-indigo-100 text-[11px] px-2.5 py-1 rounded-full border border-indigo-200 transition-all font-medium">¿Licitaciones Guatecompras?</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Indicador de Escritura de la IA -->
+            <div id="typing-indicator" class="hidden px-4 py-2 flex items-center space-x-2 text-xs text-slate-400">
+              <span class="w-2 h-2 rounded-full bg-slate-300 animate-bounce"></span>
+              <span class="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style="animation-delay: 0.2s"></span>
+              <span class="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style="animation-delay: 0.4s"></span>
+              <span>DIT-Agent está procesando tu consulta...</span>
+            </div>
+
+            <!-- Input de Mensaje -->
+            <div class="p-3 border-t border-slate-200 bg-slate-50">
+              <form id="chat-form" onsubmit="handleSendChat(event)" class="flex gap-2">
+                <input type="text" id="chat-input" placeholder="Escribe tu consulta en lenguaje natural (ej. 'Quiero ver cuotas de mercado de motos')..." class="flex-1 px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all">
+                <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-xl transition-all shadow-md flex items-center justify-center">
+                  <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Lateral con Resumen de Sinónimos y Atajos -->
+          <div class="w-full md:w-80 p-4 bg-slate-50 flex flex-col space-y-4 overflow-y-auto custom-scrollbar">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Atajos del Asesor</h4>
+            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm space-y-2">
+              <span class="text-xs font-semibold text-slate-700 block">Consultas Rápidas</span>
+              <div class="space-y-1">
+                <button onclick="setChatQuery('¿Cuál tablero muestra los precios de motocicletas en la región?')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Precios de motocicletas?</button>
+                <button onclick="setChatQuery('¿Dónde puedo ver licitaciones vigentes en Guatemala?')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Licitaciones vigentes?</button>
+                <button onclick="setChatQuery('¿Qué tablero analiza el mercado de autos nuevos en Guatemala?')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Mercado de autos de agencia?</button>
+                <button onclick="setChatQuery('Necesito un tablero para monitorear precios de fuerza motriz')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Precios fuerza motriz?</button>
+              </div>
+            </div>
+
+            <div class="bg-indigo-50/50 p-3 rounded-lg border border-indigo-100 space-y-2">
+              <span class="text-xs font-semibold text-indigo-800 block">Comprensión de Sinónimos</span>
+              <p class="text-[11px] text-slate-600 leading-normal">El DIT-Agent traduce automáticamente tus términos a vocabulario técnico oficial de la organización:</p>
+              <div class="grid grid-cols-2 gap-1 pt-1">
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Usado</strong> ➔ Rodado</div>
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Nuevo</strong> ➔ Agencia</div>
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Ventas</strong> ➔ Alzas</div>
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Sport</strong> ➔ Urbana</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seccion 3: Glosario de KPIs y Sinónimos -->
+      <section id="view-glosario" class="view-section hidden p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-premium border border-slate-200 space-y-6">
+          <div class="border-b border-slate-100 pb-4">
+            <h2 class="text-xl font-bold text-slate-800">Glosario de Negocio y Diccionario</h2>
+            <p class="text-sm text-slate-500">Consulta las métricas clave (KPIs) de los tableros de interés y el diccionario de equivalencias y sinónimos.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Columna KPI -->
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2.5">
+                <div class="p-1.5 bg-brand-50 rounded text-brand-600">
+                  <i data-lucide="key" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-md font-bold text-slate-800">Glosario de KPIs Integrados</h3>
+              </div>
+              <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                      <th class="p-3 font-semibold text-slate-700">KPI</th>
+                      <th class="p-3 font-semibold text-slate-700">Definición de Negocio</th>
+                    </tr>
+                  </thead>
+                  <tbody id="kpi-glossary-table">
+                    <!-- Dinamico -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Columna Sinónimos -->
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2.5">
+                <div class="p-1.5 bg-amber-50 rounded text-amber-600">
+                  <i data-lucide="shuffle" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-md font-bold text-slate-800">Equivalencias y Sinónimos Corporativos</h3>
+              </div>
+              <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                      <th class="p-3 font-semibold text-slate-700">Término Coloquial / Alternativo</th>
+                      <th class="p-3 font-semibold text-slate-700">Significado Oficial en Tableros</th>
+                    </tr>
+                  </thead>
+                  <tbody id="synonym-glossary-table">
+                    <!-- Dinamico -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seccion 4: Análisis de Cobertura y Métricas -->
+      <section id="view-analisis" class="view-section hidden p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- KPI Cards -->
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-semibold block uppercase">Total Tableros</span>
+              <span class="text-3xl font-bold text-brand-600">9</span>
+            </div>
+            <div class="p-3 bg-brand-50 rounded-lg text-brand-500">
+              <i data-lucide="layout-grid" class="w-6.5 h-6.5"></i>
+            </div>
+          </div>
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-semibold block uppercase">KPIs de Negocio Únicos</span>
+              <span class="text-3xl font-bold text-indigo-600">18</span>
+            </div>
+            <div class="p-3 bg-indigo-50 rounded-lg text-indigo-500">
+              <i data-lucide="target" class="w-6.5 h-6.5"></i>
+            </div>
+          </div>
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-semibold block uppercase">Preguntas Atendidas</span>
+              <span class="text-3xl font-bold text-emerald-600">62+</span>
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-lg text-emerald-500">
+              <i data-lucide="help-circle" class="w-6.5 h-6.5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráficas Estadísticas -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-700 mb-4">Cobertura de Tableros por País</h4>
+            <div class="relative h-64 w-full">
+              <canvas id="paisChart"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-700 mb-4">Frecuencia de Actualización</h4>
+            <div class="relative h-64 w-full">
+              <canvas id="frecuenciaChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL DE DETALLES DEL TABLERO -->
+  <div id="details-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 flex flex-col custom-scrollbar">
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
+        <div class="flex items-center space-x-3">
+          <span id="modal-code" class="px-2.5 py-1 text-xs font-bold rounded bg-indigo-100 text-indigo-700">MKT000</span>
+          <h3 id="modal-title" class="text-lg font-bold text-slate-800">Nombre del Tablero</h3>
+        </div>
+        <button onclick="closeModal()" class="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-all">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-6">
+        <!-- Resumen Breve y Metadatos -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+          <div>
+            <span class="text-slate-400 block mb-0.5">País</span>
+            <span id="modal-pais" class="font-bold text-slate-700">Guatemala</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-0.5">Área Propietaria</span>
+            <span id="modal-area" class="font-bold text-slate-700">Inteligencia</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-0.5">Actualización</span>
+            <span id="modal-frecuencia" class="font-bold text-slate-700">Mensual</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-0.5">Responsable</span>
+            <span id="modal-responsable" class="font-bold text-slate-700">Inteligencia</span>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Descripción del Directorio</h4>
+          <p id="modal-descripcion" class="text-sm text-slate-600 leading-relaxed">Descripción detallada.</p>
+        </div>
+
+        <!-- Enlace del Tablero -->
+        <div class="p-4 bg-brand-50 border border-brand-200 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center space-x-3 text-brand-900">
+            <i data-lucide="sharepoint" class="w-6 h-6 text-brand-600"></i>
+            <div>
+              <span class="text-xs font-bold block">Enlace de SharePoint Sopesa / Admosa</span>
+              <span class="text-[11px] text-brand-700 leading-tight">Acceso directo al directorio oficial de Microsoft SharePoint</span>
+            </div>
+          </div>
+          <a id="modal-url" href="#" target="_blank" class="w-full sm:w-auto text-center px-4 py-2 text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm transition-all flex items-center justify-center space-x-1.5">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span>Ir al Tablero Oficial</span>
+          </a>
+        </div>
+
+        <!-- Cuándo usar / Cuándo NO usar -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl space-y-2.5">
+            <span class="text-xs font-bold text-emerald-800 flex items-center space-x-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+              <span>Cuándo USAR este tablero</span>
+            </span>
+            <ul id="modal-cuando-usar" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-normal">
+              <!-- Dinamico -->
+            </ul>
+          </div>
+
+          <div class="p-4 bg-rose-50/50 border border-rose-100 rounded-xl space-y-2.5">
+            <span class="text-xs font-bold text-rose-800 flex items-center space-x-1.5">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i>
+              <span>Cuándo NO USAR este tablero</span>
+            </span>
+            <ul id="modal-cuando-no-usar" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-normal">
+              <!-- Dinamico -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Preguntas Clave -->
+        <div class="space-y-2.5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Preguntas de Negocio que Responde</h4>
+          <div id="modal-preguntas" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600">
+            <!-- Dinamico -->
+          </div>
+        </div>
+
+        <!-- KPIs y Métricas Incluidas -->
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Métricas y KPIs Soportados</h4>
+          <div class="border border-slate-200 rounded-xl overflow-hidden text-xs">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                  <th class="p-2.5 font-semibold text-slate-700">KPI</th>
+                  <th class="p-2.5 font-semibold text-slate-700">Definición de Negocio</th>
+                </tr>
+              </thead>
+              <tbody id="modal-kpi-table">
+                <!-- Dinamico -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Palabras Clave / Tags -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Palabras Clave de Búsqueda</h4>
+          <div id="modal-tags" class="flex flex-wrap gap-1.5">
+            <!-- Dinamico -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT PRINCIPAL -->
+  <script>
+    let activeCountryFilter = 'Todos';
+
+    // Inicializar app
+    window.onload = function() {
+      renderTableros(dbTableros);
+      renderGlossary();
+      initCharts();
+      lucide.createIcons();
+    };
+
+    // Alternar vistas principales de la aplicación
+    function switchView(viewId) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(`view-${viewId}`).classList.remove('hidden');
+
+      // Actualizar estado de botones del sidebar
+      document.querySelectorAll('aside nav button').forEach(btn => {
+        btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900";
+      });
+
+      const activeBtn = document.getElementById(`btn-nav-${viewId}`);
+      if (activeBtn) {
+        activeBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700";
+      }
+
+      // Re-dibujar gráficos si se entra a la pestaña de estadísticas
+      if (viewId === 'analisis') {
+        setTimeout(initCharts, 100);
+      }
+    }
+
+    // Renderizar tarjetas de tableros en el GRID
+    function renderTableros(tableros) {
+      const grid = document.getElementById('tableros-grid');
+      grid.innerHTML = '';
+
+      if (tableros.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 flex flex-col items-center justify-center text-center space-y-3 bg-white border border-slate-200 rounded-xl">
+            <div class="p-3 bg-slate-100 rounded-full text-slate-400">
+              <i data-lucide="info" class="w-10 h-10"></i>
+            </div>
+            <p class="text-slate-500 font-medium text-sm">No encontramos tableros que coincidan con tus criterios.</p>
+            <button onclick="resetSearch()" class="text-xs font-bold text-brand-600 hover:underline">Reestablecer todos los filtros</button>
+          </div>
+        `;
+        document.getElementById('tableros-count').innerText = "Ningún tablero coincide";
+        lucide.createIcons();
+        return;
+      }
+
+      tableros.forEach(tab => {
+        // Asignar banderas según país
+        let bandera = "🌍";
+        if (tab.pais === "Guatemala") bandera = "🇬🇹";
+        else if (tab.pais === "El Salvador") bandera = "🇸🇻";
+        else if (tab.pais === "Honduras") bandera = "🇭🇳";
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-xl border border-slate-200 p-5 shadow-premium hover:shadow-hover hover:border-brand-500/50 transition-all flex flex-col justify-between group cursor-pointer";
+        card.onclick = () => openDetails(tab.codigo);
+
+        card.innerHTML = `
+          <div class="space-y-3.5">
+            <!-- Header Card -->
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold tracking-wider uppercase text-slate-400">${tab.codigo}</span>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 flex items-center gap-1">
+                <span>${bandera}</span>
+                <span>${tab.pais}</span>
+              </span>
+            </div>
+
+            <!-- Titulo y Descripcion -->
+            <div>
+              <h3 class="font-bold text-slate-800 text-sm group-hover:text-brand-600 transition-colors">${tab.nombre}</h3>
+              <p class="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-3">${tab.descripcion}</p>
+            </div>
+
+            <!-- KPIs rapidos -->
+            <div class="flex flex-wrap gap-1 pt-1">
+              ${tab.kpis.slice(0, 3).map(k => `
+                <span class="text-[10px] font-semibold bg-indigo-50/50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-100/30">${k.name}</span>
+              `).join('')}
+              ${tab.kpis.length > 3 ? `<span class="text-[10px] font-bold text-slate-400">+${tab.kpis.length - 3}</span>` : ''}
+            </div>
+          </div>
+
+          <!-- Footer Card -->
+          <div class="flex items-center justify-between pt-4 mt-4 border-t border-slate-100 text-xs">
+            <span class="text-slate-400 flex items-center gap-1">
+              <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+              <span>${tab.frecuencia}</span>
+            </span>
+            <span class="text-brand-600 font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+              <span>Ficha Técnica</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </span>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      document.getElementById('tableros-count').innerText = `Mostrando ${tableros.length} ${tableros.length === 1 ? 'tablero' : 'tableros'} ${tableros.length === dbTableros.length ? 'disponibles' : 'filtrados'}`;
+      lucide.createIcons();
+    }
+
+    // Filtrar por texto con búsqueda inteligente enriquecida de sinónimos
+    function filterTableros() {
+      let query = document.getElementById('search-input').value.toLowerCase().trim();
+      
+      // Aplicar diccionario de sinónimos para expandir búsqueda
+      dbSinonimos.forEach(sin => {
+        if (query.includes(sin.termino.toLowerCase())) {
+          query += " " + sin.significado.toLowerCase();
+        }
+      });
+
+      const tokens = query.split(/\s+/).filter(t => t.length > 0);
+
+      const filtered = dbTableros.filter(tab => {
+        // Filtro por pais
+        if (activeCountryFilter !== 'Todos' && tab.pais !== activeCountryFilter) {
+          return false;
+        }
+
+        if (tokens.length === 0) return true;
+
+        // Validar coincidencia de tokens en multiples campos del tablero
+        return tokens.some(token => {
+          return tab.nombre.toLowerCase().includes(token) ||
+                 tab.codigo.toLowerCase().includes(token) ||
+                 tab.pais.toLowerCase().includes(token) ||
+                 tab.descripcion.toLowerCase().includes(token) ||
+                 tab.keywords.some(k => k.toLowerCase().includes(token)) ||
+                 tab.preguntas.some(p => p.toLowerCase().includes(token)) ||
+                 tab.kpis.some(k => k.name.toLowerCase().includes(token));
+        });
+      });
+
+      renderTableros(filtered);
+    }
+
+    // Filtro por País de forma exclusiva
+    function filterByCountry(country) {
+      activeCountryFilter = country;
+      
+      // Actualizar estado activo en botones de filtro
+      document.querySelectorAll('.btn-country').forEach(btn => {
+        btn.className = "btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all";
+      });
+      const activeBtn = document.getElementById(`filter-country-${country}`);
+      if (activeBtn) {
+        activeBtn.className = "btn-country active px-3 py-1 text-xs font-semibold rounded-full bg-brand-600 text-white transition-all";
+      }
+
+      filterTableros();
+    }
+
+    // Reestablecer filtros
+    function resetSearch() {
+      document.getElementById('search-input').value = '';
+      filterByCountry('Todos');
+    }
+
+    // Mostrar modal con detalles del tablero
+    function openDetails(codigo) {
+      const tab = dbTableros.find(t => t.codigo === codigo);
+      if (!tab) return;
+
+      document.getElementById('modal-code').innerText = tab.codigo;
+      document.getElementById('modal-title').innerText = tab.nombre;
+      document.getElementById('modal-pais').innerText = tab.pais;
+      document.getElementById('modal-area').innerText = tab.area;
+      document.getElementById('modal-frecuencia').innerText = tab.frecuencia;
+      document.getElementById('modal-responsable').innerText = tab.responsable;
+      document.getElementById('modal-descripcion').innerText = tab.descripcion;
+      
+      const urlElement = document.getElementById('modal-url');
+      urlElement.href = tab.url;
+
+      // Cuando Usar
+      const cuandoUsarList = document.getElementById('modal-cuando-usar');
+      cuandoUsarList.innerHTML = tab.cuandoUsar.map(item => `<li>${item}</li>`).join('');
+
+      // Cuando No Usar
+      const cuandoNoUsarList = document.getElementById('modal-cuando-no-usar');
+      cuandoNoUsarList.innerHTML = tab.cuandoNoUsar.map(item => `<li>${item}</li>`).join('');
+
+      // Preguntas
+      const preguntasContainer = document.getElementById('modal-preguntas');
+      preguntasContainer.innerHTML = tab.preguntas.map(preg => `
+        <div class="flex items-start space-x-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+          <span class="text-brand-500 font-bold">¿</span>
+          <span>${preg.replace(/^¿/, '')}</span>
+        </div>
+      `).join('');
+
+      // KPIs
+      const kpiTable = document.getElementById('modal-kpi-table');
+      kpiTable.innerHTML = tab.kpis.map(k => `
+        <tr class="border-b border-slate-100 hover:bg-slate-50/50">
+          <td class="p-2.5 font-bold text-slate-700 whitespace-nowrap">${k.name}</td>
+          <td class="p-2.5 text-slate-500">${k.definition}</td>
+        </tr>
+      `).join('');
+
+      // Tags
+      const tagsContainer = document.getElementById('modal-tags');
+      tagsContainer.innerHTML = tab.keywords.map(kw => `
+        <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-medium border border-slate-200">${kw}</span>
+      `).join('');
+
+      document.getElementById('details-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('details-modal').classList.add('hidden');
+    }
+
+    // Renderizar glosario y diccionario
+    function renderGlossary() {
+      // KPIs
+      const kpiTable = document.getElementById('kpi-glossary-table');
+      const uniqueKpis = [];
+      dbTableros.forEach(tab => {
+        tab.kpis.forEach(k => {
+          if (!uniqueKpis.some(u => u.name.toLowerCase() === k.name.toLowerCase())) {
+            uniqueKpis.push(k);
+          }
+        });
+      });
+
+      kpiTable.innerHTML = uniqueKpis.map(k => `
+        <tr class="border-b border-slate-200 hover:bg-slate-50 transition-colors">
+          <td class="p-3 font-bold text-slate-800">${k.name}</td>
+          <td class="p-3 text-slate-500 leading-normal">${k.definition}</td>
+        </tr>
+      `).join('');
+
+      // Sinónimos
+      const synTable = document.getElementById('synonym-glossary-table');
+      synTable.innerHTML = dbSinonimos.map(s => `
+        <tr class="border-b border-slate-200 hover:bg-slate-50 transition-colors">
+          <td class="p-3 font-bold text-slate-800">${s.termino}</td>
+          <td class="p-3 text-slate-500 leading-normal">${s.significado}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Inicializar Gráficos Cobertura (Chart.js)
+    let chartsInitialized = false;
+    let paisChart, frecuenciaChart;
+
+    function initCharts() {
+      if (chartsInitialized) return;
+      chartsInitialized = true;
+
+      // Distribución por país
+      const paisCtx = document.getElementById('paisChart').getContext('2d');
+      paisChart = new Chart(paisCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Guatemala', 'El Salvador', 'Honduras', 'Regional'],
+          datasets: [{
+            label: 'Tableros de Interés',
+            data: [4, 1, 1, 3],
+            backgroundColor: ['#6366f1', '#4f46e5', '#312e81', '#10b981'],
+            borderWidth: 0,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+
+      // Distribución por frecuencia de actualización
+      const freqCtx = document.getElementById('frecuenciaChart').getContext('2d');
+      frecuenciaChart = new Chart(freqCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Mensual', 'Diario / Semanal'],
+          datasets: [{
+            data: [8, 1],
+            backgroundColor: ['#6366f1', '#34d399'],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+
+    // AGENTE IA INTERACTIVO (CHATBOT LOGIC)
+    function clearChat() {
+      const messagesContainer = document.getElementById('chat-messages');
+      messagesContainer.innerHTML = `
+        <div class="flex items-start space-x-3 max-w-[85%]">
+          <div class="w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 flex-shrink-0">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <div class="bg-indigo-50 text-slate-800 p-4 rounded-2xl shadow-sm border border-indigo-100/50 text-sm chat-bubble-agent leading-relaxed">
+            <p class="font-bold text-indigo-900 mb-1">¡Historial de asesoría limpio! 🧹</p>
+            <p>Escribe tu consulta o haz click en los atajos para comenzar de nuevo a buscar tu tablero ideal.</p>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function setChatQuery(query) {
+      document.getElementById('chat-input').value = query;
+      document.getElementById('chat-input').focus();
+    }
+
+    function appendUserMessage(text) {
+      const messagesContainer = document.getElementById('chat-messages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = "flex items-start justify-end space-x-3 max-w-[85%] ml-auto";
+      msgDiv.innerHTML = `
+        <div class="bg-brand-600 text-white p-4 rounded-2xl shadow-sm text-sm chat-bubble-user leading-relaxed">
+          <p>${text}</p>
+        </div>
+        <div class="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 flex-shrink-0 border border-brand-200">
+          <i data-lucide="user" class="w-4 h-4"></i>
+        </div>
+      `;
+      messagesContainer.appendChild(msgDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      lucide.createIcons();
+    }
+
+    function appendAgentMessage(text, recommendedTableros = []) {
+      const messagesContainer = document.getElementById('chat-messages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = "flex flex-col space-y-2 max-w-[90%]";
+      
+      let tablerosHTML = '';
+      if (recommendedTableros.length > 0) {
+        tablerosHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+            ${recommendedTableros.map(tab => `
+              <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col justify-between space-y-3">
+                <div>
+                  <div class="flex items-center justify-between text-[10px]">
+                    <span class="font-extrabold text-slate-400">${tab.codigo}</span>
+                    <span class="font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">${tab.pais}</span>
+                  </div>
+                  <h4 class="font-bold text-slate-800 text-xs mt-1.5">${tab.nombre}</h4>
+                  <p class="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-normal">${tab.descripcion}</p>
+                </div>
+                <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                  <button onclick="openDetails('${tab.codigo}')" class="text-[11px] text-brand-600 font-bold hover:underline flex items-center gap-0.5">
+                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                    <span>Detalles</span>
+                  </button>
+                  <a href="${tab.url}" target="_blank" class="text-[11px] bg-brand-50 hover:bg-brand-100 text-brand-700 font-bold px-2 py-1 rounded border border-brand-200 flex items-center gap-1 transition-all">
+                    <span>Acceder</span>
+                    <i data-lucide="external-link" class="w-3 h-3"></i>
+                  </a>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      msgDiv.innerHTML = `
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 flex-shrink-0 border border-indigo-100">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <div class="bg-indigo-50/50 text-slate-800 p-4 rounded-2xl shadow-sm border border-indigo-100/30 text-sm chat-bubble-agent leading-relaxed">
+            <div>${text}</div>
+            ${tablerosHTML}
+          </div>
+        </div>
+      `;
+      messagesContainer.appendChild(msgDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      lucide.createIcons();
+    }
+
+    // Manejar envío de mensaje en Chat
+    async function handleSendChat(event) {
+      event.preventDefault();
+      const input = document.getElementById('chat-input');
+      const prompt = input.value.trim();
+      if (!prompt) return;
+
+      appendUserMessage(prompt);
+      input.value = '';
+
+      // Mostrar animación de escritura
+      const indicator = document.getElementById('typing-indicator');
+      indicator.classList.remove('hidden');
+
+      const apiKey = document.getElementById('gemini-api-key').value.trim();
+
+      if (apiKey) {
+        // Uso de la API de Gemini 2.5 Flash
+        try {
+          const systemInstruction = `
+            Eres el "Asesor Inteligente de Tableros (DIT-Agent)", un asistente experto diseñado para guiar a los usuarios a encontrar el tablero de interés o directorio analítico ideal según sus necesidades de negocio.
+            
+            Tienes acceso completo al siguiente Directorio de Tableros Comerciales:
+            ${JSON.stringify(dbTableros, null, 2)}
+            
+            También cuentas con este glosario de sinónimos para entender su lenguaje coloquial:
+            ${JSON.stringify(dbSinonimos, null, 2)}
+            
+            Instrucciones críticas:
+            1. Responde en español de forma fluida, amigable y muy profesional.
+            2. Analiza lo que el usuario quiere: el país (Guatemala, El Salvador, Honduras, o Regional) y el tipo de mercado (motocicletas, carros formales o carros usados/rodados, precios, o licitaciones).
+            3. Sugiere de manera precisa el/los tableros idóneos. Menciona el código (ej. MKT001) y describe brevemente por qué es útil, indicando los KPIs incluidos.
+            4. Añade los enlaces directos de SharePoint que te fueron dados.
+            5. Mantén tus explicaciones legibles con párrafos cortos y viñetas elegantes.
+          `;
+
+          const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              systemInstruction: { parts: [{ text: systemInstruction }] }
+            })
+          });
+
+          const data = await response.json();
+          const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No logré estructurar una sugerencia en este momento. Intenta de nuevo.";
+          
+          // Extraer recomendaciones locales para emparejar tarjetas interactivas
+          const localRecs = getLocalRecommendations(prompt);
+
+          indicator.classList.add('hidden');
+          appendAgentMessage(formatMarkdownText(responseText), localRecs);
+
+        } catch (error) {
+          console.error(error);
+          // Si falla, usar motor local
+          indicator.classList.add('hidden');
+          runLocalAdvisor(prompt, "*(La conexión de IA falló, se activó la recomendación local enriquecida)* ");
+        }
+      } else {
+        // Ejecución en modo local (sin API Key)
+        setTimeout(() => {
+          indicator.classList.add('hidden');
+          runLocalAdvisor(prompt);
+        }, 1000);
+      }
+    }
+
+    // Exponencial Backoff para la API de Gemini
+    async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+        return response;
+      } catch (error) {
+        if (retries > 0) {
+          await new Promise(res => setTimeout(res, delay));
+          return fetchWithRetry(url, options, retries - 1, delay * 2);
+        }
+        throw error;
+      }
+    }
+
+    // Motor de búsqueda y recomendación local inteligente
+    function getLocalRecommendations(prompt) {
+      let query = prompt.toLowerCase();
+      
+      // Aplicar diccionario de sinónimos
+      dbSinonimos.forEach(sin => {
+        if (query.includes(sin.termino.toLowerCase())) {
+          query += " " + sin.significado.toLowerCase();
+        }
+      });
+
+      const tokens = query.split(/\s+/).filter(t => t.length > 0);
+      if (tokens.length === 0) return [];
+
+      const scored = dbTableros.map(tab => {
+        let score = 0;
+
+        // Validaciones por tokens de búsqueda
+        tokens.forEach(token => {
+          if (tab.nombre.toLowerCase().includes(token)) score += 20;
+          if (tab.codigo.toLowerCase().includes(token)) score += 25;
+          if (tab.pais.toLowerCase().includes(token)) score += 15;
+          if (tab.descripcion.toLowerCase().includes(token)) score += 8;
+          if (tab.keywords.some(k => k.toLowerCase().includes(token))) score += 5;
+          if (tab.preguntas.some(p => p.toLowerCase().includes(token))) score += 4;
+          if (tab.kpis.some(k => k.name.toLowerCase().includes(token))) score += 6;
+        });
+
+        return { tab, score };
+      });
+
+      // Filtrar aquellos con un nivel mínimo de correlación
+      return scored
+        .filter(item => item.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.tab)
+        .slice(0, 2);
+    }
+
+    // Ejecutar el Asesor Local de Emergencia
+    function runLocalAdvisor(prompt, prefijo = "") {
+      const recs = getLocalRecommendations(prompt);
+
+      if (recs.length === 0) {
+        appendAgentMessage(`${prefijo}¡Hola! He analizado tu consulta pero no encontré coincidencias fuertes en el directorio para darte una recomendación óptima. ¿Podrías indicarme qué país (Guatemala, El Salvador, Honduras) o línea de negocio (motos, autos, precios) te interesa?`);
+        return;
+      }
+
+      const principal = recs[0];
+      let respuestaText = `${prefijo}¡Claro! He ubicado el directorio analítico ideal para tu consulta: <br><br>
+      📌 <strong>${principal.nombre} (${principal.codigo})</strong><br>
+      • <strong>¿Por qué?</strong> ${principal.resumenIA}<br>
+      • <strong>Área Responsable:</strong> ${principal.responsable}<br>
+      • <strong>Actualización:</strong> ${principal.frecuencia}<br><br>
+      <strong>KPIs que puedes encontrar:</strong> ${principal.kpis.map(k => k.name).join(', ')}.`;
+
+      if (recs.length > 1) {
+        respuestaText += `<br><br>También podría ser de tu interés el tablero secundario: <strong>${recs[1].nombre} (${recs[1].codigo})</strong>.`;
+      }
+
+      appendAgentMessage(respuestaText, recs);
+    }
+
+    // Formateador básico de Markdown a HTML seguro para la burbuja del Chat
+    function formatMarkdownText(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code class="bg-indigo-100 text-indigo-700 px-1 py-0.5 rounded text-xs">$1</code>')
+        .replace(/\n/g, '<br>');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directorio Inteligencia (IAN)</title>
+  
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F4F7F9', 
+              100: '#E6F0F9', 
+              500: '#009EE3', 
+              600: '#0A1F33', 
+              700: '#E2007E', 
+              800: '#3A245C',
+              900: '#0A1F33', 
+            },
+            accent: {
+              50: '#FCE6F2', 
+              500: '#E2007E',
+              600: '#C2006B', 
+            }
+          },
+          boxShadow: {
+            'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+            'hover': '0 20px 40px -15px rgba(0, 158, 227, 0.2), 0 1px 10px rgba(0, 0, 0, 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="icon" type="image/x-icon" href="GI 2.png">
+</head>
+<body class="h-full overflow-hidden flex flex-col">
+
+  <header class="bg-brand-900 text-white shadow-md flex-shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div>
+        <img src="https://lh3.googleusercontent.com/u/0/d/1wd_FPwhJrZ80VYLrKDv1emWydYqXtwXw" alt="" width="200px">
+      </div>
+      <div class="flex items-center space-x-3">
+        <div >
+          <img src="https://lh3.googleusercontent.com/u/0/d/1GI5_ns0hhqfKxSqRQwGhici4-AZyjX5J" alt="" width="50px">
+        </div>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">IAN — Directorio Inteligente</h1>
+          <p class="text-xs text-brand-100">Portal y Agente de Búsqueda de Tableros Comerciales</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="hidden md:flex items-center space-x-2 text-xs bg-brand-800 px-3 py-1.5 rounded-full text-brand-200">
+          <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse"></span>
+          <span>9 Directorios Sincronizados</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between flex-shrink-0">
+      <div class="p-4 space-y-6">
+        <div>
+          <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Navegación</span>
+          <nav class="mt-2 space-y-1">
+            <button onclick="switchView('tableros')" id="btn-nav-tableros" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700">
+              <i data-lucide="layout-grid" class="w-5 h-5"></i>
+              <span>Explorador de Tableros</span>
+            </button>
+            <button onclick="switchView('agente')" id="btn-nav-agente" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <i data-lucide="bot-message-square" class="w-5 h-5 text-indigo-500"></i>
+              <span>Agente Virtual IAN</span>
+            </button>
+            <button onclick="switchView('glosario')" id="btn-nav-glosario" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <i data-lucide="book-open" class="w-5 h-5 text-pink-500"></i>
+              <span>Glosario y Sinónimos</span>
+            </button>
+            <button onclick="switchView('analisis')" id="btn-nav-analisis" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+              <i data-lucide="bar-chart-3" class="w-5 h-5 text-purple-500"></i>
+              <span>Análisis de Datos</span>
+            </button>
+          </nav>
+        </div>
+
+        <div>
+          <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Configuración de IA</span>
+          <div class="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+            <label class="block text-[11px] font-semibold text-slate-600">Gemini API Key (Opcional)</label>
+            <input type="password" id="gemini-api-key" placeholder="Configurado automáticamente" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:ring-1 focus:ring-brand-500 focus:outline-none" value="">
+            <p class="text-[10px] text-slate-400 leading-tight">Si se deja vacío, se usará el motor de recomendación local enriquecido del DIT.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-100 text-[11px] text-slate-400 text-center">
+        <span>IAN Portal v2.0 - 2026</span>
+      </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-slate-50 flex flex-col relative custom-scrollbar">
+      
+      <section id="view-tableros" class="view-section p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+        <div class="bg-gradient-to-l from-brand-700 to-indigo-800 text-white rounded-2xl p-6 shadow-premium relative overflow-hidden">
+          <div class="relative z-10 max-w-2xl">
+            <h2 class="text-4xl font-bold">Ubica tu Tablero de Inteligencia</h2>
+            <p class="mt-1.5 text-indigo-100 text-sm leading-relaxed">Encuentra los enlaces, indicadores, palabras clave, preguntas de negocio y guías de uso de todos los tableros analíticos de la división.</p>
+          </div>
+          <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10">
+            <i data-lucide="layout-grid" class="w-64 h-64 text-white"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow-premium border border-slate-200 space-y-3.5">
+          <div class="flex flex-col md:flex-row gap-3">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="absolute left-3.5 top-3 w-5 h-5 text-slate-400"></i>
+              <input type="text" id="search-input" oninput="filterTableros()" placeholder="Busca por nombre, palabras clave o preguntas de negocio (ej. rodados', 'motocicletas')" class="w-full pl-11 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 focus:outline-none transition-all">
+            </div>
+            <div class="flex gap-2">
+              <button onclick="toggleFrecuencias()" class="flex items-center space-x-1.5 px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-700 transition-all">
+                <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                <span>Filtros</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-100">
+            <span class="text-xs text-slate-400 mr-2">País:</span>
+            <button onclick="filterByCountry('Todos')" id="filter-country-Todos" class="btn-country active px-3 py-1 text-xs font-semibold rounded-full bg-brand-600 text-white transition-all">Todos</button>
+            <button onclick="filterByCountry('Guatemala')" id="filter-country-Guatemala" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">Guatemala</button>
+            <button onclick="filterByCountry('El Salvador')" id="filter-country-El Salvador" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">El Salvador</button>
+            <button onclick="filterByCountry('Honduras')" id="filter-country-Honduras" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">Honduras</button>
+            <button onclick="filterByCountry('Regional')" id="filter-country-Regional" class="btn-country px-3 py-1 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all">Regional</button>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center text-xs text-slate-500 px-1">
+          <span id="tableros-count">Mostrando 9 tableros disponibles</span>
+          <span class="text-brand-600 font-medium">Búsqueda inteligente activa</span>
+        </div>
+
+        <div id="tableros-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          </div>
+      </section>
+
+      <section id="view-agente" class="view-section hidden flex-1 flex flex-col overflow-hidden h-full">
+        <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+          <div class="flex-1 flex flex-col bg-white border-b md:border-b-0 md:border-r border-slate-200 overflow-hidden h-full">
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 shadow-sm">
+                  <i data-lucide="bot-message-square" class="w-6 h-6 animate-pulse"></i>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-slate-800">IAN-Agent</h3>
+                  <p class="text-[11px] text-accent-600 font-medium flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent-500"></span>
+                    Asesor de Directorios Activo
+                  </p>
+                </div>
+              </div>
+              <button onclick="clearChat()" class="text-xs text-slate-400 hover:text-slate-600 flex items-center space-x-1 p-1 rounded hover:bg-slate-100 transition-all">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Limpiar Historial</span>
+              </button>
+            </div>
+
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar">
+              <div class="flex items-start space-x-3 max-w-[85%]">
+                <div class="w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 flex-shrink-0 border border-indigo-100">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <div class="bg-indigo-50 text-slate-800 p-4 rounded-2xl shadow-sm border border-indigo-100/50 text-sm chat-bubble-agent leading-relaxed">
+                  <p class="font-bold text-indigo-900 mb-1">¡Hola! Soy el agente IAN</p>
+                  <p class="mb-2">Estoy entrenado con los directorios, KPIs, sinónimos corporativos y preguntas frecuentes de todos los tableros sobre inteligencia de mercados.</p>
+                  <p class="mb-3">Dime qué tipo de información estás buscando o cuál es tu problema y te recomendaré exactamente el tablero que necesitas con su enlace directo.</p>
+                  <span class="text-[10px] text-indigo-400 font-semibold block uppercase tracking-wider">Prueba preguntándome:</span>
+                  <div class="flex flex-wrap gap-1.5 mt-2">
+                    <button onclick="setChatQuery('¿Cuál es el tablero de motos para El Salvador?')" class="text-left bg-white text-indigo-700 hover:bg-indigo-100 text-[11px] px-2.5 py-1 rounded-full border border-indigo-200 transition-all font-medium">¿Motos en El Salvador?</button>
+                    <button onclick="setChatQuery('¿Dónde puedo ver carros usados importados?')" class="text-left bg-white text-indigo-700 hover:bg-indigo-100 text-[11px] px-2.5 py-1 rounded-full border border-indigo-200 transition-all font-medium">¿Carros usados rodados?</button>
+                    <button onclick="setChatQuery('Recomiéndame un tablero para buscar concursos de Guatecompras')" class="text-left bg-white text-indigo-700 hover:bg-indigo-100 text-[11px] px-2.5 py-1 rounded-full border border-indigo-200 transition-all font-medium">¿Licitaciones Guatecompras?</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="typing-indicator" class="hidden px-4 py-2 flex items-center space-x-2 text-xs text-slate-400">
+              <span class="w-2 h-2 rounded-full bg-slate-300 animate-bounce"></span>
+              <span class="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style="animation-delay: 0.2s"></span>
+              <span class="w-2 h-2 rounded-full bg-slate-300 animate-bounce" style="animation-delay: 0.4s"></span>
+              <span>IAN está pensando...</span>
+            </div>
+
+            <div class="p-3 border-t border-slate-200 bg-slate-50">
+              <form id="chat-form" onsubmit="handleSendChat(event)" class="flex gap-2">
+                <input type="text" id="chat-input" placeholder="Escribe tu consulta en lenguaje natural (ej. 'Quiero ver cuotas de mercado de motos')..." class="flex-1 px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition-all">
+                <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-xl transition-all shadow-md flex items-center justify-center">
+                  <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="w-full md:w-80 p-4 bg-slate-50 flex flex-col space-y-4 overflow-y-auto custom-scrollbar">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Atajos del Asesor</h4>
+            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm space-y-2">
+              <span class="text-xs font-semibold text-slate-700 block">Consultas Rápidas</span>
+              <div class="space-y-1">
+                <button onclick="setChatQuery('¿Cuál tablero muestra los precios de motocicletas en la región?')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Precios de motocicletas?</button>
+                <button onclick="setChatQuery('¿Dónde puedo ver licitaciones vigentes en Guatemala?')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Licitaciones vigentes?</button>
+                <button onclick="setChatQuery('¿Qué tablero analiza el mercado de autos nuevos en Guatemala?')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Mercado de autos de agencia?</button>
+                <button onclick="setChatQuery('Necesito un tablero para monitorear precios de fuerza motriz')" class="w-full text-left text-xs text-slate-600 hover:text-indigo-600 hover:underline p-1 block truncate">¿Precios fuerza motriz?</button>
+              </div>
+            </div>
+
+            <div class="bg-indigo-50/50 p-3 rounded-lg border border-indigo-100 space-y-2">
+              <span class="text-xs font-semibold text-indigo-800 block">Comprensión de Sinónimos</span>
+              <p class="text-[11px] text-slate-600 leading-normal">El IAN-Agent traduce automáticamente tus términos a vocabulario técnico oficial de la organización:</p>
+              <div class="grid grid-cols-2 gap-1 pt-1">
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Usado</strong> ➔ Rodado</div>
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Nuevo</strong> ➔ Agencia</div>
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Ventas</strong> ➔ Alzas</div>
+                <div class="bg-white p-1.5 rounded text-[10px] border border-indigo-50"><strong class="text-indigo-700">Sport</strong> ➔ Urbana</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-glosario" class="view-section hidden p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-premium border border-slate-200 space-y-6">
+          <div class="border-b border-slate-100 pb-4">
+            <h2 class="text-xl font-bold text-slate-800">Glosario de Negocio y Diccionario</h2>
+            <p class="text-sm text-slate-500">Consulta las métricas clave (KPIs) de los tableros de interés y el diccionario de equivalencias y sinónimos.</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2.5">
+                <div class="p-1.5 bg-brand-50 rounded text-brand-600">
+                  <i data-lucide="book" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-md font-bold text-slate-800">Glosario de KPIs Integrados</h3>
+              </div>
+              <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                      <th class="p-3 font-semibold text-slate-700">KPI</th>
+                      <th class="p-3 font-semibold text-slate-700">Definición de Negocio</th>
+                    </tr>
+                  </thead>
+                  <tbody id="kpi-glossary-table">
+                    </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2.5">
+                <div class="p-1.5 bg-amber-50 rounded text-amber-600">
+                  <i data-lucide="shuffle" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-md font-bold text-slate-800">Equivalencias y Sinónimos Corporativos</h3>
+              </div>
+              <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                      <th class="p-3 font-semibold text-slate-700">Término Coloquial / Alternativo</th>
+                      <th class="p-3 font-semibold text-slate-700">Significado Oficial en Tableros</th>
+                    </tr>
+                  </thead>
+                  <tbody id="synonym-glossary-table">
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-analisis" class="view-section hidden p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-semibold block uppercase">Total Tableros</span>
+              <span class="text-3xl font-bold text-pink-600">9</span>
+            </div>
+            <div class="p-3 bg-pink-50 rounded-lg text-pink-500">
+              <i data-lucide="layout-grid" class="w-6.5 h-6.5"></i>
+            </div>
+          </div>
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-semibold block uppercase">KPIs de Negocio Únicos</span>
+              <span class="text-3xl font-bold text-indigo-600">18</span>
+            </div>
+            <div class="p-3 bg-indigo-50 rounded-lg text-indigo-500">
+              <i data-lucide="target" class="w-6.5 h-6.5"></i>
+            </div>
+          </div>
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-400 font-semibold block uppercase">Preguntas Atendidas</span>
+              <span class="text-3xl font-bold text-pink-600">62+</span>
+            </div>
+            <div class="p-3 bg-pink-50 rounded-lg text-pink-500">
+              <i data-lucide="help-circle" class="w-6.5 h-6.5"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-700 mb-4">Cobertura de Tableros por País</h4>
+            <div class="relative h-64 w-full">
+              <canvas id="paisChart"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <h4 class="text-sm font-bold text-slate-700 mb-4">Frecuencia de Actualización</h4>
+            <div class="relative h-64 w-full">
+              <canvas id="frecuenciaChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="details-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 flex flex-col custom-scrollbar">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
+        <div class="flex items-center space-x-3">
+          <span id="modal-code" class="px-2.5 py-1 text-xs font-bold rounded bg-indigo-100 text-indigo-700">MKT000</span>
+          <h3 id="modal-title" class="text-lg font-bold text-slate-800">Nombre del Tablero</h3>
+        </div>
+        <button onclick="closeModal()" class="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-all">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+          <div>
+            <span class="text-slate-400 block mb-0.5">País</span>
+            <span id="modal-pais" class="font-bold text-slate-700">Guatemala</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-0.5">Área Propietaria</span>
+            <span id="modal-area" class="font-bold text-slate-700">Inteligencia</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-0.5">Actualización</span>
+            <span id="modal-frecuencia" class="font-bold text-slate-700">Mensual</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-0.5">Responsable</span>
+            <span id="modal-responsable" class="font-bold text-slate-700">Inteligencia</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Descripción del Directorio</h4>
+          <p id="modal-descripcion" class="text-sm text-slate-600 leading-relaxed">Descripción detallada.</p>
+        </div>
+
+        <div class="p-4 bg-brand-50 border border-brand-200 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center space-x-3 text-brand-900">
+            <i data-lucide="sharepoint" class="w-6 h-6 text-brand-600"></i>
+            <div>
+              <span class="text-xs font-bold block">Enlace de SharePoint Sopesa / Admosa</span>
+              <span class="text-[11px] text-brand-700 leading-tight">Acceso directo al directorio oficial de Microsoft SharePoint</span>
+            </div>
+          </div>
+          <a id="modal-url" href="#" target="_blank" class="w-full sm:w-auto text-center px-4 py-2 text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm transition-all flex items-center justify-center space-x-1.5">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span>Ir al Tablero Oficial</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl space-y-2.5">
+            <span class="text-xs font-bold text-emerald-800 flex items-center space-x-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+              <span>Cuándo USAR este tablero</span>
+            </span>
+            <ul id="modal-cuando-usar" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-normal">
+              </ul>
+          </div>
+
+          <div class="p-4 bg-rose-50/50 border border-rose-100 rounded-xl space-y-2.5">
+            <span class="text-xs font-bold text-rose-800 flex items-center space-x-1.5">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i>
+              <span>Cuándo NO USAR este tablero</span>
+            </span>
+            <ul id="modal-cuando-no-usar" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-normal">
+              </ul>
+          </div>
+        </div>
+
+        <div class="space-y-2.5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Preguntas de Negocio que Responde</h4>
+          <div id="modal-preguntas" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600">
+            </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Métricas y KPIs Soportados</h4>
+          <div class="border border-slate-200 rounded-xl overflow-hidden text-xs">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200">
+                  <th class="p-2.5 font-semibold text-slate-700">KPI</th>
+                  <th class="p-2.5 font-semibold text-slate-700">Definición de Negocio</th>
+                </tr>
+              </thead>
+              <tbody id="modal-kpi-table">
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Palabras Clave de Búsqueda</h4>
+          <div id="modal-tags" class="flex flex-wrap gap-1.5">
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
