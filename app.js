@@ -772,6 +772,7 @@ async function handleSendChat(event) {
         3. Sugiere de manera precisa el/los tableros idóneos. Menciona el código (ej. MKT001) y describe brevemente por qué es útil, indicando los KPIs incluidos.
         4. Añade los enlaces directos de SharePoint que te fueron dados.
         5. Mantén tus explicaciones legibles con párrafos cortos y viñetas elegantes.
+        6. No incluyas el código de cada tablero en las respuetas de IAN ejp. (MKT005)
       `;
 
       // CORRECCIÓN 1: Cambiado a la versión de modelo estable 'gemini-2.5-flash'
