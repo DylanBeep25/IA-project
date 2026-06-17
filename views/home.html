@@ -1,0 +1,117 @@
+<!-- views/home.html -->
+<br>
+<br>
+<div class="p-6 max-w-6xl w-full mx-auto space-y-10 py-10 flex flex-col justify-start md:justify-center items-center min-h-full">
+  
+  <!-- HERO PRINCIPAL CON BIENVENIDA -->
+  <div class="text-center space-y-4 relative">
+    <!-- Efecto de brillo de fondo sutil (Opcional, usando Tailwind puro) -->
+    <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-72 h-72 bg-brand-100/40 rounded-full blur-3xl -z-10"></div>
+    
+    <div class="inline-flex p-4 bg-gradient-to-br from-brand-50 to-indigo-50 rounded-2xl text-brand-500 shadow-premium border border-brand-100/80">
+      <i data-lucide="bot-message-square" class="w-12 h-12 text-indigo-600 drop-shadow-sm"></i>
+    </div>
+    
+    <div class="space-y-2">
+      <h2 class="text-4xl md:text-5xl font-black text-slate-800 tracking-tight bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700">
+        Bienvenido a IAN
+      </h2>
+      <p class="text-xs font-bold uppercase tracking-widest text-accent-500">
+        Portal y Asesor de Inteligencia Comercial
+      </p>
+    </div>
+    
+    <p class="text-slate-500 max-w-xl mx-auto text-sm leading-relaxed font-medium">
+      Tu punto de acceso centralizado a los tableros analíticos e inteligencia de mercados de la organización. Optimiza tus consultas, unifica términos y toma decisiones respaldadas por datos vivos en la nube.
+    </p>
+  </div>
+
+  <!-- SECCIÓN DE MÉTRICAS RÁPIDAS DE LA ORGANIZACIÓN -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto bg-slate-100/50 p-3 rounded-2xl border border-slate-200/60 shadow-sm backdrop-blur-sm">
+    <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Región</span>
+      <span class="text-md font-bold text-slate-700 mt-0.5 block flex items-center justify-center gap-1">
+        🇬🇹 🇸🇻 🇭🇳
+      </span>
+    </div>
+    <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Líneas Clave</span>
+      <span class="text-sm font-bold text-slate-700 mt-0.5 block">Motos y Autos</span>
+    </div>
+    <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Sincronización</span>
+      <span class="text-xs font-bold text-emerald-600 mt-1 block flex items-center justify-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Google Sheets
+      </span>
+    </div>
+    <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm text-center">
+      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Frecuencia</span>
+      <span class="text-sm font-bold text-slate-700 mt-0.5 block">Mensual / Activa</span>
+    </div>
+  </div>
+
+  <!-- REJILLA DE SECCIONES INTERACTIVAS (GRID MENÚ) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+    
+    <!-- TARJETA 1: EXPLORADOR -->
+    <div onclick="switchView('tableros')" class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-premium hover:shadow-hover hover:border-brand-500/40 transition-all cursor-pointer group flex flex-col justify-between transform hover:-translate-y-1">
+      <div class="space-y-4">
+        <div class="p-3 bg-slate-50 group-hover:bg-brand-50 rounded-xl text-slate-600 group-hover:text-brand-500 w-fit transition-all shadow-sm">
+          <i data-lucide="layout-grid" class="w-6 h-6"></i>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-extrabold text-slate-800 text-base group-hover:text-brand-600 transition-colors">Explorador de Tableros</h3>
+          <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Fichas Técnicas y Enlaces</p>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Accede al catálogo completo de directores analíticos oficiales de Microsoft SharePoint de la división. Revisa cuándo usar cada herramienta y qué preguntas responde.</p>
+      </div>
+      <div class="flex items-center justify-between pt-6 mt-4 border-t border-slate-50">
+        <span class="text-xs font-bold text-brand-600 flex items-center gap-1 group-hover:translate-x-1 transition-all">
+          Ir al explorador 
+        </span>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-brand-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+      </div>
+    </div>
+
+    <!-- TARJETA 2: AGENTE VIRTUAL -->
+    <div onclick="switchView('agente')" class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-premium hover:shadow-hover hover:border-indigo-500/40 transition-all cursor-pointer group flex flex-col justify-between transform hover:-translate-y-1">
+      <div class="space-y-4">
+        <div class="p-3 bg-slate-50 group-hover:bg-indigo-50 rounded-xl text-slate-600 group-hover:text-indigo-500 w-fit transition-all shadow-sm">
+          <i data-lucide="bot" class="w-6 h-6"></i>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-extrabold text-slate-800 text-base group-hover:text-indigo-600 transition-colors">Agente Virtual IAN</h3>
+          <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Asesoría con IA</p>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Consulta en lenguaje natural qué información necesitas y nuestro motor inteligente buscará y te recomendará instantáneamente las tarjetas y tableros comerciales ideales.</p>
+      </div>
+      <div class="flex items-center justify-between pt-6 mt-4 border-t border-slate-50">
+        <span class="text-xs font-bold text-indigo-600 flex items-center gap-1 group-hover:translate-x-1 transition-all">
+          Consultar agente
+        </span>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+      </div>
+    </div>
+
+    <!-- TARJETA 3: GLOSARIO CORPORATIVO (Corregido el error de Lucide "book-chart-3" e icono de flecha) -->
+    <div onclick="switchView('glosario')" class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-premium hover:shadow-hover hover:border-pink-500/40 transition-all cursor-pointer group flex flex-col justify-between transform hover:-translate-y-1">
+      <div class="space-y-4">
+        <div class="p-3 bg-slate-50 group-hover:bg-pink-50 rounded-xl text-slate-600 group-hover:text-pink-500 w-fit transition-all shadow-sm">
+          <i data-lucide="book-open" class="w-6 h-6"></i>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-extrabold text-slate-800 text-base group-hover:text-pink-600 transition-colors">Glosario de Métricas</h3>
+          <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Diccionario de Sinónimos</p>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Consulta la definición exacta de KPIs clave como Market Share o Alzas, y revisa la matriz de sinónimos para alinear los términos coloquiales con los reportes corporativos.</p>
+      </div>
+      <div class="flex items-center justify-between pt-6 mt-4 border-t border-slate-50">
+        <span class="text-xs font-bold text-pink-600 flex items-center gap-1 group-hover:translate-x-1 transition-all">
+          Ver glosario oficial
+        </span>
+        <i data-lucide="arrow-right" class="w-4 h-4 text-pink-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+      </div>
+    </div>
+
+  </div>
+</div>

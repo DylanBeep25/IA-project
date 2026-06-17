@@ -1,0 +1,28 @@
+<div class="p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+  <div class="bg-gradient-to-l from-brand-700 to-indigo-800 text-white rounded-2xl p-6 shadow-premium relative overflow-hidden">
+    <div class="relative z-10 max-w-2xl">
+      <h2 class="text-4xl font-bold">Ubica tu Tablero de Inteligencia</h2>
+      <p class="mt-1.5 text-indigo-100 text-sm leading-relaxed">Encuentra los enlaces, indicadores, palabras clave, preguntas de negocio y guías de uso de todos los tableros analíticos de la división.</p>
+    </div>
+    <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10">
+      <i data-lucide="layout-grid" class="w-64 h-64 text-white"></i>
+    </div>
+  </div>
+
+  <div class="bg-white p-4 rounded-xl shadow-premium border border-slate-200 space-y-3.5">
+    <div class="flex flex-col md:flex-row gap-3">
+      <div class="relative flex-1">
+        <i data-lucide="search" class="absolute left-3.5 top-3 w-5 h-5 text-slate-400"></i>
+        <input type="text" id="search-input" oninput="filterTableros()" placeholder="Busca por nombre, palabras clave..." class="w-full pl-11 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-100">
+      </div>
+  </div>
+
+  <div class="flex justify-between items-center text-xs text-slate-500 px-1">
+    <span id="tableros-count">Cargando tableros...</span>
+  </div>
+
+  <div id="tableros-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+</div>

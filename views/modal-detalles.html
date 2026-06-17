@@ -1,0 +1,99 @@
+<div id="details-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+  <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 flex flex-col custom-scrollbar animate-fade-in">
+    
+    <div class="p-5 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
+      <div class="flex items-center space-x-3">
+        <span id="modal-code" class="px-2.5 py-1 text-xs font-bold rounded bg-indigo-100 text-indigo-700">MKT000</span>
+        <h3 id="modal-title" class="text-lg font-bold text-slate-800">Nombre del Tablero</h3>
+      </div>
+      <button onclick="closeModal()" class="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-all">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="p-6 space-y-6">
+      
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+        <div>
+          <span class="text-slate-400 block mb-0.5 font-medium">País</span>
+          <span id="modal-pais" class="font-bold text-slate-700">Guatemala</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block mb-0.5 font-medium">Área Propietaria</span>
+          <span id="modal-area" class="font-bold text-slate-700">Inteligencia</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block mb-0.5 font-medium">Actualización</span>
+          <span id="modal-frecuencia" class="font-bold text-slate-700">Mensual</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block mb-0.5 font-medium">Responsable</span>
+          <span id="modal-responsable" class="font-bold text-slate-700">Inteligencia</span>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Descripción del Directorio</h4>
+        <p id="modal-descripcion" class="text-sm text-slate-600 leading-relaxed">Descripción detallada.</p>
+      </div>
+
+      <div class="p-4 bg-brand-50 border border-brand-200 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center space-x-3 text-brand-900">
+          <i data-lucide="link-2" class="w-6 h-6 text-brand-600"></i>
+          <div>
+            <span class="text-xs font-bold block">Enlace al tablero en Power BI online</span>
+            <span class="text-[11px] text-brand-700 leading-tight">Acceso directo al directorio oficial de Power BI</span>
+          </div>
+        </div>
+        <a id="modal-url" href="#" target="_blank" class="w-full sm:w-auto text-center px-4 py-2 text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm transition-all flex items-center justify-center space-x-1.5">
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+          <span>Ir al Tablero Oficial</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl space-y-2.5">
+          <span class="text-xs font-bold text-emerald-800 flex items-center space-x-1.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+            <span>Cuándo USAR este tablero</span>
+          </span>
+          <ul id="modal-cuando-usar" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-normal"></ul>
+        </div>
+
+        <div class="p-4 bg-rose-50/50 border border-rose-100 rounded-xl space-y-2.5">
+          <span class="text-xs font-bold text-rose-800 flex items-center space-x-1.5">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i>
+            <span>Cuándo NO USAR este tablero</span>
+          </span>
+          <ul id="modal-cuando-no-usar" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-normal"></ul>
+        </div>
+      </div>
+
+      <div class="space-y-2.5">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Preguntas de Negocio que Responde</h4>
+        <div id="modal-preguntas" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600"></div>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Métricas y KPIs Soportados</h4>
+        <div class="border border-slate-200 rounded-xl overflow-hidden text-xs bg-white">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="p-2.5 font-semibold text-slate-700 w-1/3">KPI</th>
+                <th class="p-2.5 font-semibold text-slate-700">Definición de Negocio</th>
+              </tr>
+            </thead>
+            <tbody id="modal-kpi-table" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Palabras Clave de Búsqueda</h4>
+        <div id="modal-tags" class="flex flex-wrap gap-1.5"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
