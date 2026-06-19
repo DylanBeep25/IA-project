@@ -453,7 +453,7 @@ async function handleSendChat(event) {
   const indicator = document.getElementById('typing-indicator');
   if (indicator) indicator.classList.remove('hidden');
 
-  const apiKey = "PROCESO_LLAVE_GEMINI:";
+  const apiKey = "process.env.apiKey";
 
   if (apiKey) {
     try {
